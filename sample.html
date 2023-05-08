@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>sample of gis application</title>
+        <!-- LeafletのCSSの読み込み -->
+        <link 
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+            crossorigin=""
+        />
+        <!-- LeafletのJavaScript読み込み -->
+        <script 
+            src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""
+        ></script>
+    </head>
+    <body>
+        <!-- 地図を表示するdiv要素を宣言 -->
+        <div id="map" style="height: 80vh;"><</div>
+        <script>
+            // initialize map instance
+            const map = L.map('map', {
+                center: [36.5, 137.1],
+                zoom: 5, // initial zoom level
+            });
+            // initialize background layer
+            const backgroundLayer = L.tileLayer(
+                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                {
+                    mazZoom: 19,
+                    attribution:
+                    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                },
+            );
+            // add map to instance layer
+            map.addLayer(backgroundLayer);
+
+            // add pin
+            const marker = L.marker([33, 129.5]);
+            marker.bindPopup('平面直角座標1系原点');
+            map.addLayer(marker);
+            
+            L.marker([33,131.0]).bindPopup('平面直角座標2系原点').addTo(map);
+
+            // GeoJSON layer
+            fetch('./test.geojson') // 非同期読み込み
+                .then((res) => res.json())
+                .then((json) => {
+                    // making GeoJSON layer
+                    L.geoJSON(json)
+                        .bindPopup((layer) => layer.feature.properties.P29_004)
+                        .addTo(map);
+                });
+
+        </script>
+    </body>
+
+</html>
