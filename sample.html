@@ -45,7 +45,7 @@
             L.marker([33,131.0]).bindPopup('平面直角座標2系原点').addTo(map);
 
             // GeoJSON layer
-            fetch('./test.geojson') // 非同期読み込み
+            fetch('./P29-21_10.geojson') // 非同期読み込み
                 .then((res) => res.json())
                 .then((json) => {
                     // making GeoJSON layer
